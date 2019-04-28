@@ -1,7 +1,7 @@
 # coding=utf-8
 import pandas as pd
 
-from dawndevil.utils.ioutils import read_file_as_string
+from dawndevil.utils.io_utils import read_file_as_string
 from dawndevil.word_discovery.word_discovery import WordDiscovery
 
 

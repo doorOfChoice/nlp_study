@@ -8,7 +8,8 @@ import math
 import re
 
 from dawndevil.data_structure.trie import TrieTree
-from dawndevil.utils.ioutils import read_file_as_string, read_file_as_set
+from dawndevil.utils.io_utils import read_file_as_string, read_file_as_set
+from dawndevil.utils.nlp_utils import filter_stop_words
 
 
 class WordDiscovery(object):
@@ -70,32 +71,6 @@ class WordDiscovery(object):
         """
         return self.words[word] / self.words_count
 
-    def find_text(self, text, i):
-        """
-        寻找非停词文本段
-        :param text:
-        :param i:   起始下标
-        :return:
-        """
-        root = self.stop_words.root()
-        line = ""
-        j = i
-        can_append = False
-        for j in range(i, len(text)):
-            char = text[j]
-            node = root.find(char)
-            line += char
-            if node is None:
-                line = text[i]
-                j = i + 1
-                break
-            elif node.marked:
-                j += 1
-                can_append = True
-                break
-            root = node
-        return j, line, can_append
-
     def split_text(self, text):
         """
         分割文本
@@ -105,20 +80,9 @@ class WordDiscovery(object):
         pattern = "[\\s\n" + self.symbol + "]"
         filtered_list = re.split(pattern, text)
         result = []
+
         for filtered_text in filtered_list:
-            out_i = 0
-            out_line = ""
-            for i, char in enumerate(filtered_text):
-                if i < out_i:
-                    continue
-                out_i, line, can_append = self.find_text(filtered_text, i)
-                if can_append and out_line != "":
-                    result.append(out_line)
-                    out_line = ""
-                else:
-                    out_line += line
-            if out_line != "":
-                result.append(out_line)
+            result.extend(filter_stop_words(self.stop_words, filtered_text))
         return result
 
     def get_mi(self, word):
