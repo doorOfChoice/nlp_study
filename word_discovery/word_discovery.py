@@ -7,9 +7,9 @@
 import math
 import re
 
-from dawndevil.data_structure.trie import TrieTree
-from dawndevil.utils.io_utils import read_file_as_string, read_file_as_set
-from dawndevil.utils.nlp_utils import filter_stop_words
+from nlp_study.data_structure.trie import TrieTree
+from nlp_study.utils.io_utils import read_file_as_string, read_file_as_set
+from nlp_study.utils.nlp_utils import filter_stop_words
 
 
 class WordDiscovery(object):
